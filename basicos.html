@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    <title>Fundamentos JavaScript</title>
+</head>
+
+<body>
+    <h1>Fundamentos JavaScript</h1>
+
+    <script>
+
+class Pelicula {
+    constructor(pel){
+            this.id = pel.id,
+            this.ti = pel.titulo,
+            this.dir = pel.director,
+            this.año = pel.año,
+            this.pais = pel.paises,
+            this.gen = pel.generos,
+            this.cal = pel.calificación
+
+            this.validarID(pel.id)
+            this.validarTitulo(pel.titulo)
+            this.validarDirector(pel.director)
+            this.validarAño(pel.año)
+            this.validarPais(pel.paises)
+            this.validarGenero(pel.generos)
+            this.validarCalificacion(pel.calificación)
+        }
+
+        static generosValidos(){
+            return ['Action', 'Adult', 'Adventure', 'Animation', 'Biography', 'Comedy', 'Crime', 
+                'Documentary' ,'Drama', 'Family', 'Fantasy', 'Film-Noir', 'Game-Show', 'History', 'Horror', 'Musical', 
+                'Music', 'Mystery', 'News', 'Reality-TV', 'Romance', 'Sci-Fi', 'Short', 'Sport', 'Talk-Show', 'Thriller', 
+                'War', 'Western']
+        }
+
+        validarStr(propiedad,str){
+            if(!str) return console.warn(`${propiedad} ${str} esta vacio.`);
+
+            if(typeof str !== 'string') return console.error(`${propiedad} "${str}" no es una cadena de texto.`)
+            return true;
+        }
+
+        //Estas las hizo Mircha pero yo no
+        //validarNumero(){}
+        //validarLongitudDeCadena(){}
+        
+        //Esta tambien es de Mircha, yo al principio no la hice, luego la incorpore porqu
+        //habia mas validaciones de las que yo habia hecho.
+        validarArreglo(propiedad,valor){
+            if(!valor) return console.warn(`${propiedad} ${valor} esta vacio.`);
+            if(!(valor instanceof Array)) return console.error(`${propiedad} ${valor} ingresados No es un arrgelo.`)
+            if(valor.length === 0) return console.error(`${propiedad} ${valor} No tiene datos, ingrese al menos uno.`)
+            for(let c of valor){
+                if(typeof c !== 'string') return console.error(`El valor ${c} no es una cadena de texto.`)
+            }
+
+            return true
+        }
+              
+        validarID(id){
+        
+            if(this.validarStr('IMDB id',id))
+                if(!(/^([a-z]){2}([0-9]){7}$/.test(id)))
+                    return console.warn(`IMDB id "${id}" no es valido, debe tener 9 caracteres, los 2 primeros letras minusculas y los 7 restantes numeros`)
+          
+        }
+        
+        validarTitulo(ti){
+            if(this.validarStr('Titulo',ti)){
+                if(ti.length > 100) return console.warn(`El Titulo no debe tener mas de 100 caracteres`)
+            }
+
+        }
+
+        validarDirector(dir){
+            if(this.validarStr('Director',dir)){
+                if(dir.length > 50) return console.warn(`El Director no debe tener mas de 50 caracteres`)
+            }
+        }
+        
+        validarAño(año){
+            if(!año) return console.warn(`El Año esta vacio, ingrese un año.`);
+            if(typeof año !== 'number') return console.error(`El año "${año}" no es un numero.`)
+            if(año.toString().length !== 4) return console.error(`El año debe tener 4 digitos`)
+        }
+
+        validarPais(pais){
+            this.validarArreglo('Paices',pais)
+        }
+
+        
+        validarGenero(gen){
+            if(this.validarArreglo('Genero',gen))
+            for(let a of gen)
+                if(!(Pelicula.generosValidos().includes(a))) return console.error(`El genero ${a} ingresado no es un genero aceptado. Los generos validos son: ${Pelicula.generosValidos()}`)
+        }
+
+        validarCalificacion(cal){
+            if(!cal) return console.warn(`Calificación esta vacio, ingrese una calificación.`);
+            if(typeof cal !== 'number') return console.error(`La  calificación "${cal}" no es un numero, ingreselo como numero.`)  
+            if(cal < 0 || cal > 10) return console.error(`${cal} es incorrecto. La calificacion debe ser un numero entre 0 y 10.`)      
+            this.cal = cal.toFixed(1) 
+            //console.log(this.cal)
+        }
+
+        fichaTecnica(){
+            console.info(`Ficha Tectica:
+            \nTitulo: ${this.ti}\nDirector: ${this.dir}\nAño de Estreno: ${this.año}\nPais: ${this.pais.join(', ')}\nGenero: ${this.gen.join(', ')}\nCalificación: ${this.cal}\nIMDB id: ${this.id}`)
+        }
+
+}
+
+let peli1 = {
+    id: 'df5476692',
+    titulo: 'Se Busca', 
+    director: 'no Se', 
+    año: 8245, 
+    paises: ['argen', 'españa', 'chile'], 
+    generos: ['Action', 'Adult'], 
+    calificación: 5
+}
+
+let peli2 = {
+    id: 'as5476693',
+    titulo: 'Malefica', 
+    director: 'no Se', 
+    año: 2000, 
+    paises: ['argen', 'españa', 'chile'], 
+    generos: ['Action', 'Adult'], 
+    calificación: 9.876
+}
+let peli3 = {
+    id: 'uu8547664',
+    titulo: 'Iluminados', 
+    director: 'no Sek',
+    año: 8542, 
+    paises: ['argen', 'españa', 'chile'], 
+    generos: ['Action', 'Adult'], 
+    calificación: 4.987
+}
+
+let misPelis = [peli1, peli2, peli3]
+
+misPelis.forEach(el => new Pelicula(el).fichaTecnica())
+
+
+
+mostrarPelis(mispelis)
+
+    </script>
+</body>
+</html>
